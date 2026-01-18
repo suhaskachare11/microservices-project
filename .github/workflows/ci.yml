@@ -23,7 +23,7 @@ jobs:
 
       - name: Build Eureka Server
         run: mvn clean package -DskipTests
-        working-directory: eureka-server
+        working-directory: service-registry
 
       - name: Build User Service
         run: mvn clean package -DskipTests
