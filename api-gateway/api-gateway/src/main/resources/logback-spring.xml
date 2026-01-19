@@ -1,16 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <property name="PATTERN"
-              value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - traceId=%X{traceId} spanId=%X{spanId} - %msg%n"/>
+    <!-- Read service name from application.yml -->
+    <springProperty scope="context" name="SERVICE_NAME" source="spring.application.name"/>
 
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>${PATTERN}</pattern>
+    <!-- Console Appender with JSON format -->
+    <appender name="JSON_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <customFields>{"service":"${SERVICE_NAME}"}</customFields>
+            <fieldNames>
+                <mdc>mdc</mdc>
+            </fieldNames>
         </encoder>
+
     </appender>
 
+    <!-- Root Logger -->
     <root level="INFO">
-        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="JSON_CONSOLE"/>
     </root>
 
+    <!-- Reduce noisy logs -->
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="org.hibernate" level="WARN"/>
+
 </configuration>
+
