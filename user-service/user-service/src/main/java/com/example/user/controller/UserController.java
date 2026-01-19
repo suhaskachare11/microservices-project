@@ -24,5 +24,10 @@ public class UserController {
         System.out.println("User Service: fetching users from DB");
         return repo.findAll();
     }
+
+    @GetMapping("/test")
+    public Object getTest() {
+        return "Hello from User Test";
+    }
 }
 
